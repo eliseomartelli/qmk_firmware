@@ -30,7 +30,7 @@ static const SerialConfig led_uart_init_config = {
 
 #ifndef LED_UART_BAUD_RATE
 #    define LED_UART_BAUD_RATE 115200
-#endif  // LED_UART_BAUD_RATE
+#endif // LED_UART_BAUD_RATE
 
 static const SerialConfig led_uart_runtine_config = {
     .speed = LED_UART_BAUD_RATE,
@@ -83,7 +83,8 @@ void keyboard_pre_init_kb(void) {
     proto_init(&proto, led_command_callback);
 
     // loop to clear out receive buffer from shine wakeup
-    while (!sdGetWouldBlock(&SD0)) sdGet(&SD0);
+    while (!sdGetWouldBlock(&SD0))
+        sdGet(&SD0);
 
     sdStart(&SD0, &led_uart_runtine_config);
     keyboard_pre_init_user();
@@ -99,12 +100,13 @@ void keyboard_post_init_kb(void) {
     wait_ms(100);
 
     // loop to clear out receive buffer from ble wakeup
-    while (!sdGetWouldBlock(&SD1)) sdGet(&SD1);
+    while (!sdGetWouldBlock(&SD1))
+        sdGet(&SD1);
 
-    #ifdef RGB_MATRIX_ENABLE
+#ifdef RGB_MATRIX_ENABLE
     ap2_led_set_manual_control(1);
     ap2_led_enable();
-    #endif
+#endif
 
     keyboard_post_init_user();
 }
@@ -122,7 +124,6 @@ void matrix_scan_kb(void) {
         proto_consume(&proto, byte);
     }
 
-
     matrix_scan_user();
 }
 
@@ -132,9 +133,9 @@ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
             ap2_led_forward_keypress(record->event.key.row, record->event.key.col);
         }
 
-        const ap2_led_t blue = {
+        const ap2_led_t purple = {
             .p.blue  = 0xff,
-            .p.red   = 0x00,
+            .p.red   = 0xff,
             .p.green = 0x00,
             .p.alpha = 0xff,
         };
@@ -143,22 +144,22 @@ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
             case KC_AP2_BT1:
                 annepro2_ble_broadcast(0);
                 /* FIXME: This hardcodes col/row position */
-                ap2_led_blink(record->event.key.row, record->event.key.col, blue, 8, 50);
+                ap2_led_blink(record->event.key.row, record->event.key.col, purple, 8, 50);
                 return false;
 
             case KC_AP2_BT2:
                 annepro2_ble_broadcast(1);
-                ap2_led_blink(record->event.key.row, record->event.key.col, blue, 8, 50);
+                ap2_led_blink(record->event.key.row, record->event.key.col, purple, 8, 50);
                 return false;
 
             case KC_AP2_BT3:
                 annepro2_ble_broadcast(2);
-                ap2_led_blink(record->event.key.row, record->event.key.col, blue, 8, 50);
+                ap2_led_blink(record->event.key.row, record->event.key.col, purple, 8, 50);
                 return false;
 
             case KC_AP2_BT4:
                 annepro2_ble_broadcast(3);
-                ap2_led_blink(record->event.key.row, record->event.key.col, blue, 8, 50);
+                ap2_led_blink(record->event.key.row, record->event.key.col, purple, 8, 50);
                 return false;
 
             case KC_AP2_USB:
@@ -210,10 +211,12 @@ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
                 ap2_led_next_animation_speed();
                 ap2_led_reset_foreground_color();
                 return false;
-            #ifdef RGB_MATRIX_ENABLE
+#ifdef RGB_MATRIX_ENABLE
             case QK_RGB_MATRIX_TOGGLE:
-                if(rgb_matrix_is_enabled()) ap2_led_disable();
-                else ap2_led_enable();
+                if (rgb_matrix_is_enabled())
+                    ap2_led_disable();
+                else
+                    ap2_led_enable();
                 return true;
 
             case KC_AP_RGB_VAI:
@@ -277,7 +280,7 @@ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
                     }
                 }
                 return true;
-            #endif
+#endif
 
             default:
                 break;
