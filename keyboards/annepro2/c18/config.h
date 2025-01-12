@@ -22,8 +22,8 @@
 #define LINE_UART_TX B0
 #define LINE_UART_RX B1
 
-#define LINE_BT_UART_TX A4  // Master TX, BLE RX
-#define LINE_BT_UART_RX A5  // Master RX, BLE TX
+#define LINE_BT_UART_TX A4 // Master TX, BLE RX
+#define LINE_BT_UART_RX A5 // Master RX, BLE TX
 
 // Obins stock firmware has something similar to this already enabled, but disabled by default in QMK
 #define PERMISSIVE_HOLD
@@ -41,3 +41,5 @@
 #define EXTERNAL_FLASH_SECTOR_SIZE 4096
 #define EXTERNAL_FLASH_BLOCK_SIZE 4096
 #define EXTERNAL_FLASH_SIZE (256 * 1024) // 2M-bit flash size
+
+#define DEBOUNCE 15
